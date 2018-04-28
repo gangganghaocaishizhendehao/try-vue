@@ -1,0 +1,60 @@
+<html>
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>vue示例</title>
+	</head>
+
+	<body>
+		<div id="app">
+			{{date|formatDate1}}
+			<a v-bind:href="url">链接</a>
+			<img v-if='show1' v-bind:src="imgUrl" alt="" />
+			<button v-on:click='handleClose'>点击隐藏</button>
+		</div>
+		<script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+		<script type="text/javascript">
+			var padDate=function  (value) {
+				return value<10?'0'+value:value;
+			}
+			var app = new Vue({
+				el: "#app",
+				data: {
+					date: new Date(),
+					show1:true,
+					url:'https://github.com',
+					imgUrl:'http://img02.tooopen.com/images/20141231/sy_78327074576.jpg'
+				},
+				filters:{
+					formatDate1:function  (value) {
+						var date=new Date(value);
+						var year=date.getFullYear();
+						var month=padDate(date.getMonth());
+						var day=padDate(date.getDate());
+						var hours=padDate(date.getHours());
+						var minutes=padDate(date.getMinutes());
+						var seconds=padDate(date.getSeconds());
+						return year+'-'+month+'-'+day+'-'+hours+':'+minutes+':'+seconds;
+					}
+				},
+				mounted: function () {   //挂载完成的 时候
+					var _this = this;
+					this.timer = setInterval(function() {
+						_this.date = new Date();
+					}, 1000)
+				},
+				methods:{  //方法
+					handleClose:function handleClose () {
+						this.show1=!this.show1
+					}
+				},
+				beforeDestroy: function() {   //销毁之前
+					if(this.timer) {
+						clearInterval(this.timer)
+					}
+				}
+			})
+		</script>
+	</body>
+
+</html>
